@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SpongeBob's Krabby Patty Vault</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">SpongeBob's Secret HQ</div>
+          <h1>🧽 SpongeBob's<br /><span>Krabby Patty Vault</span> 🍔</h1>
+          <p>Help SpongeBob keep every secret ingredient safe, from the special sauce to the last pickle.</p>
+          <div class="status-pill"><span class="status-dot"></span><span id="health-status">Checking the kitchen...</span></div>
+          <p class="voice-note">Add an ingredient to hear the secret fry-cook cue.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="bubble bubble-one"></div>
+          <div class="bubble bubble-two"></div>
+          <div class="bubble bubble-three"></div>
+          <div class="pineapple">🍍</div>
+          <div class="jellyfish jellyfish-one">🪼</div>
+          <div class="sponge-character">
+            <div class="sponge-face">🧽</div>
+            <span>SpongeBob's<br />secret shift</span>
+          </div>
+          <div class="wave"></div>
+        </div>
+      </header>
+
+      <section class="content-grid">
+        <div class="panel inventory-panel">
+          <div class="panel-heading">
+            <div>
+              <div class="kicker">SpongeBob's locked cabinet</div>
+              <h2>Secret ingredients</h2>
+            </div>
+            <span class="count-badge" id="item-count">0 items</span>
+          </div>
+          <div id="items-list" class="items-list" aria-live="polite">
+            <div class="loading">Assembling the inventory...</div>
+          </div>
+        </div>
+
+        <div class="side-column">
+          <section class="panel add-panel">
+            <div class="kicker">Get ready, fry cook</div>
+            <h2>Add an ingredient</h2>
+            <form id="item-form">
+              <label>
+                Ingredient name
+                <input name="name" placeholder="e.g. Sea Salt" required maxlength="80" />
+              </label>
+              <div class="form-row">
+                <label>
+                  Quantity
+                  <input name="quantity" type="number" min="1" max="9999" value="1" required />
+                </label>
+                <label>
+                  Note <span class="optional">(optional)</span>
+                  <input name="notes" placeholder="Extra crunchy" maxlength="240" />
+                </label>
+              </div>
+              <button class="primary-button" type="submit">Add to the vault <span>→</span></button>
+              <p class="form-message" id="item-message"></p>
+            </form>
+          </section>
+
+          <section class="panel upload-panel">
+            <div class="upload-icon">📸</div>
+            <div>
+              <div class="kicker">Secret recipe evidence</div>
+              <h2>Upload a patty pic</h2>
+              <p>Test local storage with a secret recipe image, up to 5 MB.</p>
+              <form id="upload-form">
+                <label class="file-picker">
+                  <input name="recipeImage" type="file" accept="image/*" required />
+                  <span id="file-label">Choose an image</span>
+                </label>
+                <button class="secondary-button" type="submit">Store recipe image</button>
+                <p class="form-message" id="upload-message"></p>
+              </form>
+            </div>
+          </section>
+        </div>
+      </section>
+      <footer>Made with sea salt, sunshine, and SpongeBob's very secret sauce.</footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
