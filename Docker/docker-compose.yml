@@ -1,0 +1,35 @@
+services:
+  server:
+    build: .
+    image: server
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - backend:/app/uploads
+    depends_on:
+      - redis
+    networks:
+      - private
+      - internet
+  
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis:/data
+    networks:
+      - private
+   
+
+networks:
+  private:
+    internal: true
+  internet:
+    driver: bridge
+
+volumes:
+  redis:
+  backend:

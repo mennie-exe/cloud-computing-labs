@@ -120,20 +120,57 @@ document.querySelector('input[type="file"]').addEventListener("change", (event) 
   document.querySelector("#file-label").textContent = event.target.files[0]?.name || "Choose an image";
 });
 
+const uploadedImages = document.querySelector("#uploaded-images");
+const uploadCount = document.querySelector("#upload-count");
+
+const loadUploads = async () => {
+  try {
+    const response = await fetch("/api/uploads");
+    if (!response.ok) throw new Error("Could not load saved images");
+    const files = await response.json();
+
+    uploadCount.textContent = `${files.length} ${files.length === 1 ? "image" : "images"}`;
+
+    if (!files.length) {
+      uploadedImages.innerHTML = '<div class="empty">No saved images yet. Upload one above!</div>';
+      return;
+    }
+
+    uploadedImages.innerHTML = files.map((file) => `
+      <figure class="uploaded-image-card">
+        <a href="${escapeHtml(file.url)}" target="_blank" rel="noopener noreferrer">
+          <img src="${escapeHtml(file.url)}" alt="Uploaded recipe image" loading="lazy" />
+        </a>
+        <figcaption title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</figcaption>
+      </figure>
+    `).join("");
+  } catch {
+    uploadedImages.innerHTML = '<div class="empty">Could not load saved images. Please refresh.</div>';
+  }
+};
+
 document.querySelector("#upload-form").addEventListener("submit", async (event) => {
   event.preventDefault();
+  const form = event.currentTarget;
   const message = document.querySelector("#upload-message");
+
   try {
-    const response = await fetch("/api/upload", { method: "POST", body: new FormData(event.currentTarget) });
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: new FormData(form),
+    });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || "Upload failed");
+
     showMessage(message, `${result.file.originalName} stored safely!`, "success");
-    event.currentTarget.reset();
+    form.reset();
     document.querySelector("#file-label").textContent = "Choose an image";
+    await loadUploads();
   } catch (error) {
-    showMessage(message, error.message, "error");
+    showMessage(message, error.message || "Upload failed", "error");
   }
 });
 
 checkHealth();
 loadItems();
+loadUploads();
